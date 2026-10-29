@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>나를 알아가는 시간 · 성향 테스트</title>
+<meta name="description" content="나, 연애하는 나, 결혼한 나 — 친구·연인·배우자와 함께 비교해보는 성향 테스트">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --bg:#fff7fb; --card:#ffffff; --ink:#4a4458; --sub:#8b829c; --line:#f1e6f3;
+    --accent:#ff8fb8; --accent-soft:#ffd6e6;
+  }
+  body.m-self{--accent:#a98bff;--accent-soft:#e6dcff}
+  body.m-love{--accent:#ff8fb8;--accent-soft:#ffd6e6}
+  body.m-marry{--accent:#5fcfa6;--accent-soft:#cdf4e4}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Gowun Dodum',sans-serif;color:var(--ink);background:var(--bg);
+    background-image:radial-gradient(circle at 10% 10%,#ffe3ef 0,transparent 40%),radial-gradient(circle at 90% 30%,#e9e1ff 0,transparent 40%),radial-gradient(circle at 30% 95%,#d9f6ea 0,transparent 40%);
+    background-attachment:fixed;min-height:100vh}
+  .wrap{max-width:440px;margin:0 auto;padding:24px 16px 48px;min-height:100vh}
+  .screen{display:none;animation:fade .4s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1,h2,h3,.jua{font-family:'Jua',sans-serif;font-weight:400}
+  .card{background:var(--card);border-radius:24px;padding:22px;box-shadow:0 6px 24px rgba(180,150,200,.15);margin-bottom:16px}
+  .btn{display:block;width:100%;border:none;border-radius:18px;padding:16px;font-family:'Jua',sans-serif;font-size:18px;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.08);transition:transform .1s}
+  .btn:active{transform:translateY(2px)}
+  .btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+  .btn+.btn{margin-top:10px}
+  .muted{color:var(--sub);font-size:14px;line-height:1.6}
+
+  /* home */
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  #home{font-family:'Pretendard',-apple-system,sans-serif;position:relative;padding-top:8px}
+  .h-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.14em;color:#a79fb6;font-weight:600;margin-bottom:26px}
+  .h-top i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+  .h-top i::before{content:'';width:6px;height:6px;border-radius:50%;background:#c9a8ff}
+  .orbs{position:relative;height:150px;margin:0 auto 22px;width:220px}
+  .orb{position:absolute;width:112px;height:112px;border-radius:50%;mix-blend-mode:multiply;filter:blur(.3px);animation:drift 7s ease-in-out infinite}
+  .orb.o1{left:6px;top:4px;background:radial-gradient(circle at 35% 30%,#efe6ff,#c9b3ff)}
+  .orb.o2{right:6px;top:4px;background:radial-gradient(circle at 35% 30%,#ffe9f1,#ffb3cf);animation-delay:-2.3s}
+  .orb.o3{left:54px;top:40px;background:radial-gradient(circle at 35% 30%,#e3fbf1,#a6e9cd);animation-delay:-4.6s}
+  @keyframes drift{50%{transform:translate(0,-6px) scale(1.03)}}
+  .orbs span{position:absolute;font-size:11px;font-weight:700;letter-spacing:.06em;color:#fff;text-shadow:0 1px 4px rgba(120,90,160,.35)}
+  .h-title{font-size:34px;line-height:1.22;font-weight:800;letter-spacing:-.035em;color:#3d3550;text-align:center}
+  .h-title em{font-style:normal;background:linear-gradient(90deg,#a98bff,#ff8fb8 55%,#5fcfa6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .h-sub{text-align:center;font-size:14.5px;line-height:1.65;color:#8b829c;margin:12px 0 30px;letter-spacing:-.01em}
+  .m-label{font-size:12px;font-weight:700;letter-spacing:.12em;color:#b2a9c2;margin:0 4px 10px}
+  .mode{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:16px 16px 16px 14px;margin-bottom:12px;font-family:inherit;color:#3d3550;background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 2px rgba(90,70,120,.04),0 10px 30px -12px rgba(120,90,160,.22);transition:transform .2s,box-shadow .2s}
+  .mode:hover{transform:translateY(-2px);box-shadow:0 1px 2px rgba(90,70,120,.04),0 16px 34px -12px rgba(120,90,160,.3)}
+  .mode:active{transform:scale(.985)}
+  .mode .ic{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .mode .ic svg{width:24px;height:24px}
+  .mode.self .ic{background:#f0e9ff;color:#8d6cf0}
+  .mode.love .ic{background:#ffe8f0;color:#f0709f}
+  .mode.marry .ic{background:#e2f7ee;color:#3fb98c}
+  .mode .tx{flex:1;min-width:0}
+  .mode .no{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#b8b0c6;margin-bottom:2px}
+  .mode b{display:block;font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
+  .mode span.d{display:block;font-size:13px;color:#8b829c;letter-spacing:-.01em}
+  .mode .go{width:30px;height:30px;border-radius:50%;background:#f6f2fa;display:flex;align-items:center;justify-content:center;color:#9d93ad;flex-shrink:0;transition:background .2s,color .2s}
+  .mode:hover .go{background:#3d3550;color:#fff}
+  .h-foot{display:flex;justify-content:center;gap:18px;margin-top:26px;font-size:12px;color:#a79fb6}
+  .h-foot b{display:block;font-size:17px;color:#3d3550;font-weight:800;text-align:center}
+
+  /* intro */
+  .invite{background:var(--accent-soft);border-radius:18px;padding:14px 16px;margin-bottom:16px;font-size:15px;line-height:1.6}
+  input[type=text]{width:100%;border:2px solid var(--line);border-radius:16px;padding:14px 16px;font-size:17px;font-family:inherit;outline:none;margin:10px 0 16px;color:var(--ink)}
+  input[type=text]:focus{border-color:var(--accent)}
+  .back{background:none;border:none;color:var(--sub);font-family:inherit;font-size:15px;cursor:pointer;padding:4px 0 14px}
+
+  /* quiz */
+  .prog{height:12px;background:#fff;border-radius:99px;overflow:hidden;margin:6px 0 8px;box-shadow:inset 0 0 0 2px var(--line)}
+  .prog i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .35s}
+  .qtop{display:flex;justify-content:space-between;align-items:center;color:var(--sub);font-size:14px}
+  .cheer{text-align:center;font-family:'Jua';font-size:15px;color:var(--accent);min-height:22px;margin:2px 0 6px}
+  .cheer.pop{animation:pop .5s ease}
+  @keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  .qcard{text-align:center;padding:26px 20px}
+  .qcard .qe{font-size:46px;margin-bottom:10px}
+  .qcard h2{font-size:21px;line-height:1.45;word-break:keep-all}
+  .ans{display:flex;gap:10px;align-items:center;width:100%;background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 14px;margin-bottom:10px;font-family:inherit;font-size:15.5px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.5;word-break:keep-all;transition:all .15s}
+  .ans .k{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-family:'Jua';display:flex;align-items:center;justify-content:center;font-size:15px}
+  .ans:hover{border-color:var(--accent)}
+  .ans.pick{background:var(--accent-soft);border-color:var(--accent)}
+  .ans.pick .k{background:var(--accent);color:#fff}
+
+  /* loading */
+  .load{text-align:center;padding-top:30vh}
+  .load .dots{font-size:44px;animation:bob 1s ease-in-out infinite}
+
+  /* result */
+  .rhead{text-align:center;background:linear-gradient(160deg,var(--accent-soft),#fff);padding:28px 20px}
+  .rhead .tag{display:inline-block;background:#fff;border-radius:99px;padding:5px 14px;font-size:13px;color:var(--sub);margin-bottom:10px}
+  .rhead .char{font-size:84px;line-height:1.1;animation:bob 2.4s ease-in-out infinite}
+  .rhead .type{font-family:'Jua';font-size:42px;letter-spacing:3px;color:var(--accent);margin-top:6px}
+  .rhead h2{font-size:24px;margin:2px 0 8px}
+  .rhead p{font-size:15px;line-height:1.6;word-break:keep-all}
+  .sec h3{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .sec h4{font-family:'Jua';font-weight:400;font-size:16px;margin:16px 0 8px}
+  .sec p{font-size:15px;line-height:1.8;word-break:keep-all}
+  .sec ul{list-style:none}
+  .sec li{position:relative;background:#fff6f0;border-radius:14px;padding:11px 12px 11px 34px;margin-bottom:8px;font-size:14.5px;line-height:1.6;word-break:keep-all}
+  .sec li::before{content:'😣';position:absolute;left:10px;top:11px;font-size:14px}
+  .why{background:var(--accent-soft);border-radius:16px;padding:14px;margin-top:4px}
+  .axis{margin-bottom:14px}
+  .axis .lbl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+  .axis .lbl b{font-family:'Jua';font-weight:400;font-size:15px}
+  .bar{display:flex;height:16px;border-radius:99px;overflow:hidden;background:#f3eef7}
+  .bar .l{background:var(--accent)}
+  .bar .r{background:#e4dcef}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{background:var(--bg);border-radius:99px;padding:6px 12px;font-size:14px}
+  .pal{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:18px;margin-bottom:10px}
+  .pal.easy{background:#eefaf4}
+  .pal.adj{background:#fff4ea}
+  .pal .em{font-size:30px;display:flex;gap:2px}
+  .pal b{font-family:'Jua';font-weight:400;font-size:16px}
+  .pal small{display:block;font-size:13.5px;line-height:1.6;color:#6d6480;margin-top:3px;word-break:keep-all}
+  .pill{display:inline-block;font-size:12px;border-radius:99px;padding:2px 9px;margin-bottom:6px;font-family:'Jua'}
+  .easy .pill{background:#bdf0dc;color:#2f8c6a}
+  .adj .pill{background:#ffd9b5;color:#b86a1e}
+
+  /* compare */
+  .vs{display:flex;align-items:center;justify-content:space-around;text-align:center;margin:6px 0 14px}
+  .vs .p{flex:1}
+  .vs .p .e{font-size:50px}
+  .vs .p .n{font-size:14px;color:var(--sub)}
+  .vs .p .t{font-family:'Jua';font-size:22px;color:var(--accent)}
+  .vs .heart{font-size:26px}
+  .chem{text-align:center;background:var(--accent-soft);border-radius:18px;padding:14px;margin-bottom:16px}
+  .chem .s{font-family:'Jua';font-size:34px;color:var(--accent)}
+  .chem .ttl{font-family:'Jua';font-size:19px}
+  .cmp{padding:12px 0;border-top:1px dashed var(--line)}
+  .cmp .row{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}
+  .cmp .row .who{width:52px;flex-shrink:0;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cmp .row .bar{flex:1;height:12px}
+  .cmp .row .bar.them .l{background:#ffc38f}
+  .cmp .row .v{width:46px;text-align:right;font-family:'Jua'}
+  .cmp .h{display:flex;justify-content:space-between;font-family:'Jua';font-size:15px}
+  .cmp .same{font-size:12px;border-radius:99px;padding:2px 8px;background:#e7f9f0;color:#2f8c6a}
+  .cmp .diff{font-size:12px;border-radius:99px;padding:2px 8px;background:#fff0e2;color:#b86a1e}
+  .cmp p{font-size:14px;line-height:1.65;margin-top:6px;word-break:keep-all}
+  .share-box{background:var(--accent-soft);border-radius:20px;padding:18px;text-align:center}
+  .share-box p{font-size:14.5px;line-height:1.6;margin-bottom:12px;word-break:keep-all}
+  .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(80px);background:#4a4458;color:#fff;padding:12px 20px;border-radius:99px;font-size:14px;transition:transform .3s,opacity .3s;z-index:9;white-space:nowrap;opacity:0;pointer-events:none}
+  .toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+  .linkbox{word-break:break-all;font-size:12px;background:#fff;border-radius:12px;padding:10px;margin-top:10px;display:none;text-align:left}
+  footer{text-align:center;color:var(--sub);font-size:12px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME -->
+  <section class="screen on" id="home">
+    <div class="h-top"><i>PERSONALITY TEST</i><span>Vol.1</span></div>
+    <div class="orbs">
+      <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+      <span style="left:34px;top:38px">ME</span><span style="right:30px;top:38px">LOVE</span><span style="left:92px;top:118px">HOME</span>
+    </div>
+    <h1 class="h-title">나를 알아가는<br><em>조용한 시간</em></h1>
+    <p class="h-sub">17개의 상황 속 선택으로 알아보는 나,<br>그리고 함께하는 사람과의 우리</p>
+    <div class="m-label">CHOOSE YOUR TEST</div>
+    <button class="mode self" onclick="pickMode('self')">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3.2-2.4-5-5.6-5 0 3.2 2.4 5 5.6 5z"/></svg></div>
+      <div class="tx"><span class="no">01 · 친구와 비교</span><b>나 파악하기</b><span class="d">평소의 나는 어떤 사람일까?</span></div>
+      <div class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+    </button>
+    <button class="mode love" onclick="pickMode('love')">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div>
+      <div class="tx"><span class="no">02 · 연인과 비교</span><b>연애하는 나 파악하기</b><span class="d">사랑할 때 나는 어떻게 변할까?</span></div>
+      <div class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+    </button>
+    <button class="mode marry" onclick="pickMode('marry')">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg></div>
+      <div class="tx"><span class="no">03 · 부부가 함께</span><b>결혼한 나 파악하기</b><span class="d">함께 사는 나는 어떤 배우자일까?</span></div>
+      <div class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+    </button>
+    <div class="h-foot"><div><b>17</b>문항</div><div><b>3분</b>소요</div><div><b>16</b>가지 유형</div></div>
+    <footer style="margin-top:22px">재미로 보는 테스트예요. 정답은 없어요.</footer>
+  </section>
+
+  <!-- INTRO -->
+  <section class="screen" id="intro">
+    <button class="back" onclick="goHome()">← 처음으로</button>
+    <div id="inviteBox"></div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:54px" id="introIc"></div>
+      <h2 style="font-size:24px;margin:6px 0" id="introTitle"></h2>
+      <p class="muted" id="introDesc"></p>
+    </div>
+    <div class="card">
+      <label class="jua" style="font-size:17px">닉네임을 알려주세요</label>
+      <input type="text" id="nick" maxlength="10" placeholder="예) 말랑이">
+      <button class="btn" onclick="startQuiz()">시작하기 ✨</button>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="quiz">
+    <div class="qtop"><button class="back" style="padding:0" onclick="prevQ()">← 이전</button><span id="qnum"></span></div>
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="cheer" id="cheer"></div>
+    <div class="card qcard"><div class="qe" id="qEmoji"></div><h2 id="qText"></h2></div>
+    <div id="answers"></div>
+  </section>
+
+  <!-- LOADING -->
+  <section class="screen" id="loading">
+    <div class="load"><div class="dots">🔮</div><h2 style="margin-top:14px">마음을 들여다보는 중…</h2></div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="result"></section>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== 모드 ===================== */
+const MODES = {
+  self:  {ic:'🌱', title:'나 파악하기', who:'친구', desc:'일상, 청소, 일하는 순간까지 17가지 상황!<br>가장 나다운 선택을 골라주세요.<br>끝나면 친구에게 보내서 서로 비교할 수 있어요.', sec:'친구로서의 나', secIc:'🤝'},
+  love:  {ic:'💗', title:'연애하는 나 파악하기', who:'연인', desc:'연애 중 만나는 17가지 상황!<br>솔직하게 골라야 정확해요 😉<br>끝나면 연인에게 보내서 우리 케미를 확인해봐요.', sec:'연애할 때의 나', secIc:'💌'},
+  marry: {ic:'🏡', title:'결혼한 나 파악하기', who:'배우자', desc:'함께 사는 일상 속 17가지 상황.<br>집안일, 돈, 양가 이야기까지!<br>부부가 각자 해보고 결과를 같이 봐요.', sec:'배우자로서의 나', secIc:'🏡'}
+};
+
+/* ===================== 질문 =====================
+   ax: 0=E/I 1=S/N 2=T/F 3=J/P
+   각 선택지 [문장, 점수]  +2/+1 → 앞 글자(E,S,T,J) / -1/-2 → 뒷 글자(I,N,F,P) */
+const Q = {
+  self: [
+    {ax:0,e:'🌙',q:'기다리던 금요일 저녁! 나의 선택은?',o:[
+      ['단톡방에 "오늘 콜?" 던지고 제일 먼저 나간다',2],['누가 부르면 못 이기는 척 나간다',1],['배달 음식 + 넷플릭스, 이게 진짜 불금이지',-1],['이미 잠옷 입었음. 아무도 날 찾지 마',-2]]},
+    {ax:1,e:'🎬',q:'친구가 "어제 본 영화 어땠어?" 하고 묻는다',o:[
+      ['줄거리를 처음부터 끝까지 순서대로 브리핑',2],['인상 깊었던 장면 몇 개를 생생하게 설명',1],['"그 영화가 결국 말하고 싶었던 건…" 의미 해석 시작',-1],['감독 의도 분석하다가 어느새 내 인생 이야기 중',-2]]},
+    {ax:3,e:'🧹',q:'대청소하기로 한 주말 아침, 나는?',o:[
+      ['구역 순서 정해놓고 위에서 아래로 착착',2],['할 일 목록 대충 정하고 하나씩 해치운다',1],['눈에 띄는 곳부터 손 가는 대로',-1],['서랍 정리하다 발견한 옛날 사진첩 보는 중… 벌써 저녁',-2]]},
+    {ax:2,e:'📝',q:'친구가 "나 면접 완전 망쳤어ㅠ"라고 한다',o:[
+      ['어떤 질문에서 막혔는지 같이 분석하고 다음 전략 세우기',2],['"다음엔 이렇게 해보면 어때?" 현실적인 조언',1],['"많이 속상하지ㅠ" 일단 마음부터 들어준다',-1],['같이 속상해하다 떡볶이 사러 출동',-2]]},
+    {ax:0,e:'🎈',q:'처음 가는 모임, 아는 사람이 하나도 없다',o:[
+      ['들어가자마자 자기소개하고 분위기 주도',2],['옆자리 사람에게 먼저 말을 걸어본다',1],['누가 말 걸어주길 기다리며 미소 장착',-1],['핸드폰 보는 척하며 화장실 위치부터 파악',-2]]},
+    {ax:1,e:'🐈',q:'길을 걷는데 고양이가 나를 빤히 쳐다본다',o:[
+      ['"귀엽다~" 사진 한 장 찍고 갈 길 간다',2],['털 상태, 목줄 보고 주인 있는 아인지 확인',1],['\'혹시… 나한테 할 말이 있나?\'',-1],['이 고양이와 나의 전생 인연 시나리오 완성',-2]]},
+    {ax:3,e:'💼',q:'업무(과제) 마감이 일주일 남았다',o:[
+      ['첫날 계획 세우고 매일 조금씩, 마감 이틀 전 완료',2],['대략 계획은 있고 중반부터 본격 시작',1],['사흘 전부터 슬슬 발동이 걸린다',-1],['마감 전날 밤, 초인적인 집중력 각성',-2]]},
+    {ax:2,e:'⚖️',q:'팀 프로젝트에서 의견이 둘로 갈렸다',o:[
+      ['데이터와 근거로 더 나은 쪽을 정하자고 한다',2],['장단점 표 만들어서 비교해보자고 한다',1],['양쪽 다 서운하지 않은 중간안을 찾는다',-1],['분위기 싸해지는 게 제일 싫어서 일단 다들 달랜다',-2]]},
+    {ax:0,e:'🎤',q:'노래방에서 마이크가 나에게 넘어왔다',o:[
+      ['기다렸다. 탬버린까지 들고 무대 장악',2],['분위기 맞춰 신나는 곡 한 곡',1],['"난 듣는 게 더 좋아~" 박수 담당',-1],['예약 목록에 몰래 다른 사람 노래를 넣어둔다',-2]]},
+    {ax:3,e:'🗂️',q:'지금 내 방(책상) 상태는?',o:[
+      ['물건마다 지정석이 있다. 각 맞춰 정리 완료',2],['대체로 깔끔, 가끔 의자 위에 옷이 쌓인다',1],['어지러워 보여도 뭐가 어디 있는지 다 안다',-1],['그 의자… 옷걸이로 전직한 지 오래다',-2]]},
+    {ax:1,e:'📚',q:'새로운 일을 배울 때 나는',o:[
+      ['매뉴얼 1페이지부터 순서대로',2],['예시를 보고 따라 해보면서 익힌다',1],['전체 원리를 먼저 이해해야 손이 간다',-1],['일단 감으로 해보다가 나만의 방법을 만든다',-2]]},
+    {ax:2,e:'🍗',q:'친구가 내 몫의 마지막 치킨 한 조각을 말도 없이 먹었다',o:[
+      ['"그건 내 거였잖아." 논리적으로 짚는다',2],['웃으면서 "다음 치킨은 네가 쏴" 거래 성사',1],['속으로 서운하지만 "괜찮아~" 한다',-1],['괜찮다고 했지만… 3년 뒤에도 기억하고 있다',-2]]},
+    {ax:3,e:'📦',q:'택배 상자를 뜯은 뒤 나는',o:[
+      ['바로 테이프 떼고 납작하게 접어 분리수거',2],['그날 안에는 정리한다',1],['현관에 잠시… 며칠 모아둔다',-1],['상자가 쌓이고 쌓여 이제 고양이 성이 되었다',-2]]},
+    {ax:0,e:'🎉',q:'기분 좋은 일이 생기면',o:[
+      ['단톡방, 인스타, 가족까지 전부 알린다',2],['친한 친구 몇 명에게 바로 연락',1],['가장 친한 한 명에게만 조용히',-1],['혼자 침대에서 이불 차며 곱씹는다',-2]]},
+    {ax:1,e:'🗒️',q:'회사(학교)에서 새 프로젝트를 맡았다. 제일 먼저 하는 건?',o:[
+      ['지난 자료와 성공 사례부터 찾아본다',2],['해야 할 일을 구체적으로 쪼갠다',1],['"이걸 왜 하는 거지?" 목적과 방향부터 생각',-1],['아무도 안 해본 새로운 아이디어부터 떠올린다',-2]]},
+    {ax:2,e:'🌷',q:'들으면 하루 종일 기분 좋은 칭찬은?',o:[
+      ['"너 진짜 일 잘한다, 똑똑해"',2],['"네 판단은 늘 믿을 만해"',1],['"너 덕분에 힘이 났어"',-1],['"너랑 있으면 마음이 편해"',-2]]},
+    {ax:3,e:'📱',q:'약속 1시간 전, 갑자기 취소 연락이 왔다',o:[
+      ['하루 계획이 다 틀어져서 꽤 아쉽다',2],['아쉽지만 다른 계획으로 금방 갈아탄다',1],['오히려 좋아. 자유시간 생겼다',-1],['이미 다른 친구한테 "지금 뭐해?" 보내는 중',-2]]}
+  ],
+  love: [
+    {ax:0,e:'🎡',q:'오랜만에 연인과 하루 종일 데이트!',o:[
+      ['페스티벌, 핫플 투어! 사람 많을수록 신난다',2],['맛집 갔다가 전시 보는 적당히 활기찬 코스',1],['한적한 카페에서 둘이 오래 수다',-1],['배달 시켜 먹고 영화 보는 집 데이트가 최고',-2]]},
+    {ax:1,e:'🎁',q:'기념일 선물을 고를 때',o:[
+      ['"갖고 싶다" 했던 걸 정확히 기억해서 산다',2],['실용적이면서 예쁜 걸로 고른다',1],['우리만 아는 의미가 담긴 선물',-1],['손편지 + 추억 사진첩, 세상에 하나뿐인 것',-2]]},
+    {ax:2,e:'💼',q:'연인이 회사 일로 많이 지쳐 보인다',o:[
+      ['상황을 듣고 해결 방법을 구체적으로 같이 찾는다',2],['들어주다가 "이렇게 해보는 건 어때?" 조심스레 조언',1],['끝까지 들어주며 "많이 힘들었겠다" 공감',-1],['"누가 그랬어? 내가 가만 안 둬!" 무조건 내 편',-2]]},
+    {ax:3,e:'🗺️',q:'이번 주말 데이트 코스는?',o:[
+      ['식당 예약, 동선, 플랜B까지 준비 완료',2],['메인 장소 하나만 정해둔다',1],['동네만 정하고 가서 정한다',-1],['"어디 갈까?" "몰라 너는?" 무한 반복',-2]]},
+    {ax:0,e:'👯',q:'연인의 친구들을 처음 만나는 자리',o:[
+      ['설렌다! 오늘 안에 다 친해지고 번호 교환',2],['살짝 긴장되지만 금방 적응한다',1],['연인 옆에 꼭 붙어서 리액션 담당',-1],['집에 오는 길에 "나 괜찮았어?"를 열 번 물어본다',-2]]},
+    {ax:1,e:'🪳',q:'연인이 묻는다. "만약 내가 바퀴벌레로 변하면 어떡할 거야?"',o:[
+      ['"그럴 일 없어. 자자."',2],['"일단 안 밟히게 조심해야겠다" 현실 대책 수립',1],['"작은 집 만들어주고 계속 사랑해줄게"',-1],['바퀴벌레가 된 연인과의 사랑 이야기를 3부작으로 구상',-2]]},
+    {ax:3,e:'💬',q:'나의 연락 스타일은?',o:[
+      ['기상·출근·점심·퇴근·잘 자, 정해진 루틴',2],['중요한 순간마다 꼭 연락한다',1],['생각날 때마다 아무 때나',-1],['답장 3시간 뒤 "헉 맞다!"',-2]]},
+    {ax:2,e:'⛈️',q:'연인과 다툼이 생겼을 때 더 중요한 건',o:[
+      ['무엇이 문제였는지 정확히 짚고 넘어가는 것',2],['다음에 같은 일이 없도록 규칙을 정하는 것',1],['서로의 마음이 더 상하지 않는 것',-1],['일단 꼭 안아주고 화해부터',-2]]},
+    {ax:0,e:'🥺',q:'연인에게 서운한 일이 생기면',o:[
+      ['그 자리에서 바로 말해야 속이 시원하다',2],['그날 안에는 꼭 이야기한다',1],['혼자 정리한 다음 며칠 뒤에 꺼낸다',-1],['말 안 해도 알아주길 바라며 조용해진다',-2]]},
+    {ax:3,e:'🧽',q:'연인 집에 놀러 갔는데 설거지가 산처럼 쌓여 있다',o:[
+      ['못 참는다. 고무장갑 끼고 바로 시작',2],['"우리 같이 치울까?" 정리 제안',1],['신경 쓰이지만 오늘은 그냥 논다',-1],['우리 집도 비슷해서 오히려 편안하다',-2]]},
+    {ax:1,e:'✨',q:'연인에게 반하는 순간은?',o:[
+      ['바뀐 머리, 새 옷 같은 디테일을 알아봐줄 때',2],['지나가며 한 말을 기억해서 챙겨줄 때',1],['둘이 미래를 이야기하며 눈이 반짝일 때',-1],['말 안 해도 생각이 통했을 때',-2]]},
+    {ax:2,e:'💝',q:'나의 사랑 표현 방식은?',o:[
+      ['필요한 걸 해결해주고 챙겨주는 행동파',2],['바빠도 시간을 내서 함께 있어주는 것',1],['"사랑해" "보고 싶어" 다정한 말',-1],['편지, 이벤트, 감동 폭격',-2]]},
+    {ax:0,e:'🎸',q:'데이트 중 연인이 길거리 버스킹 무대에 같이 올라가자고 한다',o:[
+      ['"가자!" 이미 마이크 잡고 있음',2],['쑥스럽지만 한 소절은 같이 부른다',1],['무대 아래에서 열심히 영상 촬영 담당',-1],['투명 인간이 되는 능력을 간절히 원한다',-2]]},
+    {ax:1,e:'🔮',q:'연인이 "우리 10년 뒤엔 어떨까?" 하고 묻는다',o:[
+      ['집, 직장, 저축… 현실 플랜을 이야기',2],['"지금처럼 잘 지내고 있겠지~" 담백하게',1],['어떤 동네, 어떤 집, 어떤 강아지와… 상상 펼치기',-1],['10년 뒤 우리 둘의 하루를 영화처럼 묘사 시작',-2]]},
+    {ax:2,e:'🍝',q:'연인이 열심히 만든 요리가… 솔직히 너무 짜다',o:[
+      ['"조금 짠데? 다음엔 소금 반만 넣자" 솔직하게',2],['맛있게 먹고 나중에 살짝 이야기한다',1],['"정성이 느껴져서 너무 좋아" 하며 물을 몰래 마신다',-1],['감동해서 눈물이 나 짠 줄도 모른다',-2]]},
+    {ax:3,e:'🌊',q:'밤 10시, 연인이 "지금 바다 보러 갈래?"',o:[
+      ['내일 일정이 있어서… 주말로 계획 세우자',2],['고민하다가 가까운 곳이면 OK',1],['좋아! 옷만 갈아입고 출발',-1],['이미 차 키 들고 현관에 서 있음',-2]]},
+    {ax:3,e:'🧳',q:'연인과 여행 가서 숙소에 도착! 짐 정리는?',o:[
+      ['캐리어 다 풀고 옷은 옷장에, 세면도구는 욕실에',2],['필요한 것만 꺼내서 정리',1],['캐리어를 그대로 옷장처럼 쓴다',-1],['돌아갈 때까지 캐리어 속 보물찾기',-2]]}
+  ],
+  marry: [
+    {ax:0,e:'☀️',q:'주말 아침, 우리 부부의 이상적인 하루는?',o:[
+      ['지인 가족들과 바비큐 파티',2],['둘이 나들이 가서 맛집 투어',1],['집 근처 산책하고 집밥',-1],['둘 다 침대에서 각자 폰 보며 뒹굴뒹굴',-2]]},
+    {ax:1,e:'🛋️',q:'새 집을 꾸밀 때 가장 중요한 건',o:[
+      ['수납, 동선, 청소하기 편한 실용성',2],['가성비 좋은 가구로 깔끔하게',1],['우리 취향이 담긴 분위기',-1],['핀터레스트에서 본 꿈의 집 콘셉트부터',-2]]},
+    {ax:3,e:'🧹',q:'집안일 분담 방식은?',o:[
+      ['요일별·담당별 표를 만들어 냉장고에 붙인다',2],['큰 틀만 나누고 나머지는 알아서',1],['그때그때 시간 되는 사람이',-1],['먼저 못 참는 사람이 하는 걸로…',-2]]},
+    {ax:2,e:'🍽️',q:'배우자가 실수로 그릇을 깼다',o:[
+      ['"움직이지 마!" 바로 치울 도구부터 가져온다',2],['"다음부턴 조심하자~" 하며 같이 치운다',1],['"놀랐지? 다친 데 없어?"',-1],['"그 그릇 원래 별로였어~" 기분부터 풀어준다',-2]]},
+    {ax:0,e:'🏠',q:'집들이·손님 초대는',o:[
+      ['자주, 많이! 우리 집은 동네 사랑방',2],['가끔 친한 사람들 불러서 즐겁게',1],['꼭 필요한 사람만 조촐하게',-1],['우리 집 비밀번호는 둘만 안다',-2]]},
+    {ax:1,e:'🧦',q:'빨래 개다가 양말 한 짝이 또 사라졌다',o:[
+      ['세탁기, 건조기, 침대 밑 순서대로 수색',2],['일단 짝 없는 양말 바구니에 넣어둔다',1],['"양말들은 대체 어디로 가는 걸까…" 철학에 잠긴다',-1],['세탁기 속 양말 왕국 가설을 세운다',-2]]},
+    {ax:2,e:'🚗',q:'차나 집처럼 큰 지출을 정할 때',o:[
+      ['가격·연비·이자 비교표가 먼저',2],['예산 안에서 합리적으로 고른다',1],['우리 가족이 행복할지가 먼저',-1],['"이거 타고 여행 가는 우리 모습 상상해봐" 마음은 이미 결정',-2]]},
+    {ax:3,e:'🎒',q:'명절이나 가족 여행 준비는',o:[
+      ['한 달 전부터 체크리스트 작성',2],['일주일 전 장보기·짐 목록 정리',1],['전날 밤 몰아서',-1],['출발하면서 "아 그거 챙겼어?"',-2]]},
+    {ax:0,e:'🌆',q:'퇴근 후 몹시 지친 날',o:[
+      ['배우자 붙잡고 오늘 있었던 일 대방출',2],['저녁 먹으며 조금 이야기하면 풀린다',1],['30분만 혼자 있게 해주면 다시 충전',-1],['말 걸지 말아줘… 소파와 한 몸이 되고 싶다',-2]]},
+    {ax:1,e:'🌅',q:'노후 이야기를 꺼내면 나는',o:[
+      ['연금, 저축액 숫자부터 계산',2],['지금부터 할 수 있는 현실적인 준비',1],['어떤 삶을 살고 싶은지 그림부터',-1],['바닷가 시골집, 텃밭, 강아지… 상상만으로 행복',-2]]},
+    {ax:3,e:'💰',q:'우리 집 가계부는?',o:[
+      ['영수증 하나까지 기록, 월말 정산',2],['앱으로 대략 관리한다',1],['통장 잔고 보고 감으로',-1],['카드 명세서가 곧 가계부… 매달 깜짝 놀람',-2]]},
+    {ax:2,e:'👨‍👩‍👧',q:'양가 사이에 작은 갈등이 생기면',o:[
+      ['원칙과 공평함을 기준으로 정리',2],['사실관계를 정리해서 차분히 이야기',1],['누구도 서운하지 않게 마음부터 챙긴다',-1],['양쪽 다 달래다가 내가 제일 지친다',-2]]},
+    {ax:0,e:'🛗',q:'아파트 엘리베이터에서 이웃을 만났다',o:[
+      ['"안녕하세요~ 이사 오셨어요?" 대화 시작',2],['밝게 인사하고 날씨 이야기 한마디',1],['목례하고 층수 버튼만 뚫어지게 본다',-1],['이웃이 탈 것 같으면 계단을 진지하게 고려한다',-2]]},
+    {ax:1,e:'🛒',q:'마트 장보기 스타일은?',o:[
+      ['적어간 목록대로 쏙쏙, 동선 최소화',2],['목록 위주로 사고 할인 상품 조금',1],['둘러보다 새로운 것도 시도',-1],['"이거 맛있겠다" 하다 보면 카트가 실험실',-2]]},
+    {ax:2,e:'💼',q:'배우자가 회사를 그만두고 싶다고 한다',o:[
+      ['경제 상황, 이직 계획부터 같이 점검',2],['이유를 들어보고 현실적인 선택지를 정리',1],['얼마나 힘들었는지 먼저 충분히 들어준다',-1],['"그동안 고생했어. 나만 믿어" 일단 안아준다',-2]]},
+    {ax:3,e:'🧺',q:'건조대에서 빨래를 걷어온 뒤',o:[
+      ['바로 개서 각자 서랍에',2],['그날 안에는 갠다',1],['소파 위에서 잠시 대기',-1],['소파 위 빨래산에서 그날 입을 옷을 꺼내 입는다',-2]]},
+    {ax:3,e:'📅',q:'주말 계획은 언제 세울까?',o:[
+      ['월요일에 이미 정해져 있다',2],['목요일쯤 대략 정한다',1],['토요일 아침 눈 뜨고 나서',-1],['계획? 눈 떠보니 일요일 저녁',-2]]}
+  ]
+};
+
+/* 중간 응원 멘트 (해당 문항 번호를 보여줄 때 등장) */
+const CHEER = {5:'벌써 3분의 1! 잘하고 있어요 👏',9:'반 넘었다! 물 한 모금 마시고 가요 🥤',13:'거의 다 왔어요, 조금만 더! 🏃',16:'마지막 문제! 두근두근 💓'};
+
+const AX = [
+  {a:'E',b:'I',an:'외향',bn:'내향',topic:'에너지 방향'},
+  {a:'S',b:'N',an:'감각',bn:'직관',topic:'생각하는 방식'},
+  {a:'T',b:'F',an:'사고',bn:'감정',topic:'결정하는 방식'},
+  {a:'J',b:'P',an:'계획',bn:'즉흥',topic:'생활 리듬'}
+];
+
+/* ===================== 유형별 결과 =====================
+   d: 나는 이런 사람 / self·love·marry: 모드별 / stW: 제일 힘든 순간 / stD: 왜 그럴까 / heal: 회복 */
+const T = {
+ISTJ:{e:'🦫',n:'성실한 비버',tag:'한 번 한 약속은 끝까지 지키는 믿음직한 사람',kw:['책임감','꾸준함','신뢰','정리왕'],
+ d:'말보다 행동으로 증명하는 사람이에요. 한 번 "하겠다"고 한 일은 아무도 안 보는 곳에서도 끝까지 해내고, 그래서 주변에서 "그 사람한테 맡기면 안심"이라는 말을 자주 들어요. 새로운 방법보다는 검증된 방법을 좋아하고, 익숙한 루틴 속에서 가장 실력을 발휘해요. 약속 시간 10분 전에 도착해서 늦는 사람을 기다리는 쪽은 대부분 나예요. 겉으로는 무뚝뚝해 보일 수 있지만, 속으로는 주변 사람들을 꼼꼼히 챙기고 있어요. 감정을 말로 표현하는 건 조금 어색해도, 한 번 마음을 준 사람에게는 오래도록 한결같아요.',
+ self:'친구 생일은 물론, 친구가 지나가듯 말한 중요한 일정까지 다 기억하는 친구예요. 연락을 자주 하지는 않지만, 친구가 정말 필요할 때 가장 먼저 와 있는 사람이에요. 여행을 가면 자연스럽게 숙소 예약과 정산을 맡게 되고, 다들 "역시 너밖에 없다"고 말해요. 다만 약속을 자주 미루거나 대충 넘기는 친구에게는 속으로 조금씩 마음의 거리를 둬요. 처음엔 친해지는 데 시간이 걸리지만, 10년 지기가 가장 많은 타입이에요.',
+ love:'화려한 이벤트보다 꾸준함으로 사랑을 보여줘요. 매일 같은 시간에 오는 연락, 한 번도 어긴 적 없는 약속이 나만의 사랑 표현이에요. "사랑해"라는 말은 쑥스러워도, 연인이 아프다고 하면 약과 죽을 들고 바로 찾아가요. 연애 초반엔 천천히 다가가지만, 한 번 마음을 정하면 쉽게 흔들리지 않아요. 연인에게 바라는 건 큰 게 아니라, 서로 믿을 수 있는 안정감이에요.',
+ marry:'공과금 날짜, 가족 생일, 냉장고 속 유통기한까지 머릿속에 저장되어 있는 배우자예요. 가계부와 살림을 체계적으로 관리해서 가족이 "우리 집은 걱정 없다"고 느끼게 해줘요. 다만 정해둔 규칙이 자꾸 무시되면 말없이 스트레스가 쌓일 수 있어요. 말로 하는 애정 표현은 적어도, 매일 아침 챙겨주는 따뜻한 밥 한 끼로 사랑을 전해요. 함께 오래 살수록 그 든든함을 더 크게 느끼게 되는 사람이에요.',
+ stW:['분명히 계획해둔 일이 남의 실수로 갑자기 틀어질 때','나는 최선을 다했는데, 대충 한 사람이 똑같은 평가를 받을 때','준비할 시간도 없이 "일단 해보자"며 떠밀릴 때'],
+ stD:'나는 "예측 가능함"에서 안정감을 느끼는 사람이라, 갑작스러운 변화는 머릿속 지도를 통째로 다시 그려야 하는 일처럼 느껴져요. 그래서 겉으로는 "괜찮아"라고 해도 속으로는 한참 동안 마음이 정리되지 않아요. 예민한 게 아니라, 그만큼 모든 걸 책임감 있게 준비해왔기 때문이에요.',
+ heal:['정리정돈','익숙한 루틴','조용한 혼자 시간']},
+ISFJ:{e:'🐑',n:'다정한 양',tag:'티 안 나게 모두를 챙기는 따뜻한 수호자',kw:['배려','섬세함','헌신','따뜻함'],
+ d:'주변 사람들의 작은 변화를 누구보다 먼저 알아채는 사람이에요. 친구의 표정이 조금만 어두워도 "무슨 일 있어?" 하고 먼저 물어보게 돼요. 내가 조금 힘들어도 다른 사람이 편하면 괜찮다고 생각해서, 부탁을 거절하는 게 정말 어려워요. 한 번 들은 이야기는 오래 기억해서, 상대가 좋아하는 음식이나 싫어하는 것까지 자연스럽게 챙겨요. 갈등이 생기면 내가 먼저 양보하는 편이지만, 그만큼 속으로 서운함이 쌓이기도 해요. 티 나지 않게 모두를 챙기는 사람이라, 내가 없을 때 비로소 사람들이 내 빈자리를 느껴요.',
+ self:'친구가 힘들다고 하면 말없이 간식과 따뜻한 음료를 들고 찾아가는 친구예요. 친구의 생일, 기념일, 지난번에 했던 고민까지 다 기억하고 "그거 어떻게 됐어?" 하고 물어봐줘요. 모임에서는 앞에 나서기보다 물 따라주고, 고기 굽고, 조용한 사람을 챙기는 역할을 해요. 그런데 정작 내 고민은 "별거 아니야" 하고 잘 꺼내지 않아요. 친구들이 "너는 진짜 천사야"라고 말하지만, 가끔은 나도 누군가 먼저 챙겨줬으면 좋겠다고 생각해요.',
+ love:'연인이 좋아하는 것, 싫어하는 것, 못 먹는 음식까지 기억하는 세심한 연인이에요. 데이트 때 연인이 추워 보이면 미리 챙겨온 담요를 꺼내는 사람이죠. 서운한 일이 있어도 "이 정도는 괜찮아" 하고 넘기다가, 어느 날 한꺼번에 터지기도 해요. 그러니 서운함은 작을 때 조금씩 꺼내보는 연습이 필요해요. 화려한 말보다 "고마워"라는 한마디에 모든 피로가 녹는 사람이에요.',
+ marry:'집을 가족 모두에게 가장 편안한 곳으로 만드는 배우자예요. 배우자가 피곤해 보이면 말하지 않아도 좋아하는 반찬을 만들어 둬요. 양가 부모님 생신, 명절 선물까지 꼼꼼히 챙겨서 집안 분위기를 따뜻하게 만들어요. 다만 혼자 다 떠안다가 지칠 수 있으니, 배우자에게 도움을 요청하는 것도 사랑이에요. 함께 살수록 "이 사람 덕분에 우리 집이 굴러간다"는 걸 느끼게 해주는 사람이에요.',
+ stW:['내가 해온 배려가 어느새 "당연한 것"이 되어버렸을 때','사람들 사이에 냉랭한 분위기가 흐르고, 내가 그 중간에 끼어 있을 때','거절하고 싶은데 차마 말 못 하고 또 "응"이라고 했을 때'],
+ stD:'다른 사람의 감정을 내 일처럼 느끼기 때문에, 주변이 불편하면 나도 편할 수가 없어요. 그래서 갈등을 피하려고 참다 보면 마음속에 작은 서운함들이 차곡차곡 쌓여요. 내가 원하는 건 거창한 보답이 아니라, "네 덕분이야"라는 한마디의 인정이에요.',
+ heal:['따뜻한 대화','익숙한 공간에서 휴식','좋아하는 음식']},
+INFJ:{e:'🦉',n:'깊은 숲 부엉이',tag:'말없이 마음을 꿰뚫어 보는 통찰가',kw:['통찰력','깊이','진정성','공감'],
+ d:'조용히 있어도 사람들의 속마음을 꿰뚫어 보는 사람이에요. 상대가 말하지 않은 감정까지 느껴져서, 가끔 "어떻게 알았어?"라는 말을 들어요. 겉으로는 차분하고 온화하지만, 머릿속에는 생각과 상상이 끊임없이 흘러가요. 넓은 인간관계보다 마음이 통하는 소수의 사람과 깊이 연결되는 걸 좋아해요. 나만의 확고한 가치관이 있어서, 그게 무너지는 상황에서는 의외로 단호해져요. 사람을 좋아하지만 혼자만의 시간이 꼭 필요하고, 에너지가 바닥나면 조용히 연락을 끊고 동굴에 들어가기도 해요.',
+ self:'친구가 고민을 털어놓으면 핵심을 콕 짚어주는 상담사 같은 친구예요. 친구 본인도 몰랐던 마음을 대신 말로 정리해줘서 "너랑 이야기하면 머리가 맑아져"라는 말을 들어요. 친구는 많지 않지만, 한 명 한 명과 깊고 오래가는 관계를 맺어요. 그런데 남의 이야기는 잘 들어주면서 정작 내 속마음은 잘 꺼내지 않아요. 가끔 연락이 뜸해지는 건 마음이 멀어진 게 아니라, 혼자 충전하는 시간이 필요하기 때문이에요.',
+ love:'영혼까지 통하는 깊은 연결을 꿈꾸는 연인이에요. 화려한 선물보다 새벽까지 이어지는 진솔한 대화 한 번이 훨씬 소중해요. 연인의 작은 표정 변화도 알아채고, 말하지 않아도 필요한 걸 챙겨줘요. 하지만 신뢰가 깨졌다고 느끼면, 겉으로는 조용해도 마음의 문을 단단히 닫아버려요. 서로의 성장을 응원하는, 오래 함께할 수 있는 사랑을 원해요.',
+ marry:'가족이 어떤 방향으로 함께 성장해갈지 큰 그림을 그리는 배우자예요. 배우자의 말투 하나, 표정 하나로 오늘 하루가 어땠는지 알아차려요. 집이 단순히 사는 곳이 아니라, 서로가 마음을 쉴 수 있는 안식처가 되길 바라요. 다만 혼자만의 시간이 부족하면 예민해질 수 있으니, 서로의 "조용한 시간"을 존중해주는 게 중요해요. 깊이 이해받을 때 가장 큰 사랑을 느끼는 사람이에요.',
+ stW:['겉도는 대화만 오가는 모임에 몇 시간씩 있어야 할 때','내가 중요하게 여기는 가치를 누군가 가볍게 비웃을 때','혼자 생각할 틈도 없이 계속 사람들 사이에 있어야 할 때'],
+ stD:'나는 다른 사람의 감정을 스펀지처럼 흡수하는 사람이라, 사람들 속에 오래 있으면 마음의 배터리가 빠르게 닳아요. 거기에 진심이 통하지 않는 관계까지 겹치면 "나는 왜 여기 있지?" 하는 공허함이 찾아와요. 연락이 뜸해지는 건 도망이 아니라, 다시 따뜻한 나로 돌아오기 위한 시간이에요.',
+ heal:['일기 쓰기','조용한 산책','깊은 대화 한 번']},
+INTJ:{e:'🐱',n:'전략가 고양이',tag:'혼자서도 완벽한 계획을 세우는 독립적인 두뇌',kw:['전략','독립','논리','목표지향'],
+ d:'머릿속에 항상 "더 나은 방법"을 찾는 설계도가 펼쳐져 있는 사람이에요. 목표가 생기면 감정에 흔들리지 않고 가장 효율적인 길을 찾아 묵묵히 나아가요. 겉으로는 무심하고 차가워 보일 수 있지만, 관심 있는 것에는 누구보다 깊이 빠져들어요. 결론 없는 회의나 의미 없는 잡담은 솔직히 시간이 아깝다고 느껴요. 남들이 "그게 되겠어?" 할 때 조용히 결과로 보여주는 걸 좋아해요. 마음을 잘 열지 않지만, 한 번 인정한 사람에게는 의외로 따뜻하고 의리 있어요.',
+ self:'매일 연락하진 않아도, 친구가 중요한 결정을 앞뒀을 때 가장 먼저 찾게 되는 친구예요. 감정적인 위로보다 현실적이고 정확한 조언을 해줘서 "팩폭인데 맞는 말이라 할 말이 없다"는 반응을 들어요. 친구가 많지는 않지만, 대화가 깊게 통하는 친구들과 오래가요. 단체 모임보다는 1:1로 깊게 이야기하는 걸 훨씬 좋아해요. 무뚝뚝해 보여도 친구가 이룬 성과는 누구보다 진심으로 인정해줘요.',
+ love:'말보다 행동으로, 상대의 성장을 진심으로 도와주는 연인이에요. "사랑해"보다는 연인의 고민을 해결할 방법을 밤새 찾아보는 게 내 방식이에요. 처음엔 차가워 보일 수 있지만, 마음을 연 사람에게는 나만 아는 귀여운 면을 보여줘요. 감정적인 밀당이나 이유를 모르는 서운함 앞에서는 어떻게 해야 할지 몰라 당황해요. 서로 독립적이면서도 같은 방향을 바라보는 관계를 원해요.',
+ marry:'재테크, 내 집 마련, 커리어까지 가족의 장기 계획을 꼼꼼하게 설계하는 배우자예요. 문제가 생기면 감정보다 해결책을 먼저 찾아서 집안의 든든한 전략가가 돼요. 다만 배우자가 원하는 게 해결책이 아니라 공감일 때가 있다는 걸 기억하면 좋아요. 서로의 공간과 시간을 존중해줄 때 가장 편안함을 느껴요. 표현은 적어도, 가족을 위한 계획에는 늘 배우자가 1순위로 들어가 있어요.',
+ stW:['결론 없이 빙빙 도는 회의나 대화에 붙잡혀 있을 때','충분히 생각할 시간 없이 감정적으로 결정을 강요받을 때','내 공간과 계획에 누군가 허락 없이 들어올 때'],
+ stD:'나는 머릿속에서 모든 걸 정리하고 통제할 수 있을 때 편안함을 느껴요. 그래서 비효율과 예측 불가능한 상황이 겹치면, 겉으로는 무표정해도 속에서는 에너지가 빠르게 소진돼요. 차가워 보이는 건 화가 나서가 아니라, 혼자 정리할 시간이 필요하다는 신호예요.',
+ heal:['혼자 몰입하기','책·다큐','새로운 지식 탐구']},
+ISTP:{e:'🦝',n:'손재주 너구리',tag:'말보다 손이 먼저, 쿨하고 유연한 해결사',kw:['침착함','실용','자유','해결사'],
+ d:'말보다 손이 먼저 움직이는 실전형 해결사예요. 고장 난 물건이 있으면 설명서보다 먼저 직접 뜯어보고, 결국 고쳐내요. 평소엔 조용하고 무심해 보이지만, 위기 상황에서는 누구보다 침착하고 빠르게 판단해요. 남에게 간섭하지도, 간섭받지도 않는 쿨한 관계를 좋아해요. 감정을 길게 이야기하는 건 어색해서 "그래서 어떻게 하면 되는데?"가 먼저 나와요. 관심 없는 일엔 에너지를 아끼지만, 꽂힌 취미에는 시간 가는 줄 모르고 몰입해요.',
+ self:'평소엔 연락이 뜸하다가 친구가 "컴퓨터가 안 돼ㅠ" 하면 바로 나타나는 친구예요. 말로 위로하는 건 서툴지만, 친구가 이사할 때 묵묵히 짐을 날라주는 게 내 방식의 우정이에요. 오래 안 봐도 어색하지 않은, 부담 없는 관계를 좋아해요. 친구가 고민을 길게 이야기하면 "결론이 뭐야?"라는 말이 목까지 차오르지만 꾹 참아요. 함께 게임하거나 운동하는 것처럼, 무언가를 "같이 하는" 시간이 곧 친해지는 시간이에요.',
+ love:'부담 없이 편안한 연애를 좋아하는 연인이에요. 매일 긴 통화보다는 함께 드라이브하거나 게임하는 시간이 더 행복해요. 사랑한다는 말은 잘 안 해도, 연인의 고장 난 물건을 고쳐주고 무거운 짐을 들어주는 게 내 사랑 표현이에요. 너무 많은 감정 표현을 요구받으면 숨이 막히는 것 같아 살짝 거리를 두게 돼요. 서로의 자유를 존중해주는 연인 앞에서 가장 다정해져요.',
+ marry:'집에 있는 모든 고장 난 것을 고치는 맥가이버 배우자예요. 형광등, 수도꼭지, 가구 조립은 말하기도 전에 끝나 있어요. 잔소리나 간섭이 많아지면 말수가 줄어들고 자기만의 공간으로 들어가요. 서로 각자의 취미 시간을 인정해줄 때 오히려 사이가 더 좋아져요. 위기가 닥쳤을 때 가장 침착하게 가족을 지키는 사람이에요.',
+ stW:['하나부터 열까지 "이렇게 해"라고 간섭받을 때','감정을 자세히 말해달라고 계속 요구받을 때','의미 없는 규칙과 절차 때문에 일이 진행되지 않을 때'],
+ stD:'나는 내 방식대로, 내 속도로 움직일 때 가장 능력이 발휘되는 사람이에요. 그래서 누군가 내 자유를 조이기 시작하면 숨이 턱 막히는 기분이 들어요. 말없이 사라지는 건 상대가 싫어서가 아니라, 혼자 머리를 식혀야 다시 괜찮아지기 때문이에요.',
+ heal:['혼자 드라이브','운동','손으로 만드는 취미']},
+ISFP:{e:'🐰',n:'감성 토끼',tag:'내 속도대로 예쁘게 살아가는 감성 예술가',kw:['감성','온화함','여유','취향'],
+ d:'자기만의 속도로 하루를 예쁘게 채워가는 사람이에요. 노을 색깔, 카페 음악, 바람 냄새 같은 작은 것들에서 행복을 발견해요. 다른 사람을 쉽게 판단하지 않아서, 곁에 있으면 누구든 마음이 편해져요. 갈등을 싫어해서 불편한 일이 생기면 맞서기보다 조용히 피하는 편이에요. 겉으로는 순하고 느긋해 보이지만, 내가 소중히 여기는 것을 건드리면 의외로 단단한 고집이 나와요. 계획보다는 그날의 기분과 감성을 따라 움직일 때 가장 나다워요.',
+ self:'같이 있으면 아무 말 안 해도 편안한 친구예요. 예쁜 카페, 맛있는 디저트, 좋은 노래를 발견하면 제일 먼저 친구에게 공유해요. 친구의 이야기를 판단 없이 들어줘서 "너한테는 뭐든 말할 수 있어"라는 말을 들어요. 단체 모임에서는 조용히 웃고 있지만, 친한 친구들 앞에서는 엉뚱한 매력이 터져요. 친구와 다툼이 생기면 말로 따지기보다 시간을 두고 조용히 풀리길 기다려요.',
+ love:'말보다 분위기와 작은 행동으로 사랑을 표현하는 연인이에요. 연인이 좋아하는 노래로 플레이리스트를 만들고, 길에서 본 예쁜 꽃 사진을 보내요. 연인의 말투가 조금만 차가워져도 바로 느끼고, 혼자 마음이 쪼그라들어요. 다툼이 생기면 바로 대화하기보다 마음을 진정할 시간이 필요해요. 재촉하지 않고 기다려주는 연인에게 가장 깊은 사랑을 줘요.',
+ marry:'집을 아기자기하고 따뜻한 감성으로 채우는 배우자예요. 창가에 화분을 놓고, 계절마다 소품을 바꾸며 집에 생기를 불어넣어요. 거창한 계획보다 둘이 함께하는 평온한 저녁이 가장 큰 행복이에요. 잔소리나 비난이 반복되면 대꾸하지 않고 마음을 닫아버릴 수 있어요. 서로의 취향을 존중해주는 집에서 가장 행복하게 웃는 사람이에요.',
+ stW:['누군가 날카로운 말투로 나를 몰아붙일 때','"빨리빨리" 재촉받으며 내 속도를 잃어버릴 때','사람들 사이의 다툼을 바로 옆에서 지켜봐야 할 때'],
+ stD:'나는 감정의 온도에 아주 민감한 사람이라, 차가운 말 한마디가 하루 종일 마음에 남아요. 그래서 갈등 상황에서는 싸우기보다 조용히 물러나 마음을 지키는 쪽을 택해요. 회피하는 게 아니라, 상처받지 않고 다시 부드러운 나로 돌아오기 위한 나만의 방법이에요.',
+ heal:['음악 듣기','자연 속 산책','예쁜 것 구경']},
+INFP:{e:'🦋',n:'몽글몽글 나비',tag:'마음속에 작은 우주를 품은 이상주의자',kw:['상상력','공감','진정성','순수함'],
+ d:'마음속에 아무도 모르는 작은 우주를 품고 사는 사람이에요. 샤워하다가, 버스 창밖을 보다가 갑자기 상상의 세계로 떠나는 일이 일상이에요. 다른 사람의 아픔에 깊이 공감해서, 슬픈 영화나 뉴스에 남들보다 오래 마음 아파해요. 겉으로는 조용하고 순해 보여도, 내 가치관에 어긋나는 일 앞에서는 절대 물러서지 않아요. 진짜 나를 보여줄 수 있는 사람은 많지 않지만, 친해지면 엉뚱하고 귀여운 매력이 끝도 없이 나와요. "나는 왜 이렇게 생각이 많을까" 고민하지만, 그 섬세함이 바로 나만의 빛이에요.',
+ self:'친구의 이야기를 진심으로, 끝까지 들어주는 친구예요. 친구가 힘들다고 하면 말 한마디 한마디를 고르고 골라서 위로의 메시지를 보내요. 친해지기까지 시간이 걸리지만, 일단 마음을 열면 엉뚱한 드립과 상상력으로 친구를 웃게 만들어요. 약속은 좋은데 막상 당일이 되면 "집에 있고 싶다"는 마음과 싸우기도 해요. 친구의 장점을 누구보다 잘 알아보고, 진심 어린 편지로 감동을 주는 사람이에요.',
+ love:'운명 같은 사랑을 꿈꾸는 로맨티스트예요. 연인과의 사소한 대화, 함께 본 하늘까지 마음속 앨범에 소중히 저장해둬요. 작은 말 한마디에 하루 종일 행복하기도 하고, 무심한 한마디에 밤새 뒤척이기도 해요. 서운한 감정을 바로 말하기보다 혼자 곱씹다가 편지나 긴 메시지로 전하는 편이에요. 있는 그대로의 나를 사랑해주는 연인 앞에서 가장 빛나요.',
+ marry:'서로의 꿈을 끝까지 응원해주는 배우자예요. 배우자가 지쳐 있으면 말없이 안아주고, 따뜻한 말로 하루를 위로해줘요. 집안일의 효율보다 "우리 집이 따뜻한가"가 더 중요한 사람이에요. 돈, 일정 같은 현실적인 문제가 계속 쌓이면 마음이 지쳐 피하고 싶어질 수 있어요. 공감과 대화가 흐르는 집에서 누구보다 깊은 사랑을 나누는 사람이에요.',
+ stW:['내 진심이 오해받고 "왜 그렇게 예민해?"라는 말을 들을 때','내 가치관과 맞지 않는 일을 억지로 해야 할 때','차갑고 사무적인 말투로 대화가 뚝 끝나버릴 때'],
+ stD:'나는 감정을 아주 깊고 섬세하게 느끼는 사람이라, 남들에겐 작은 일이 나에겐 큰 파도처럼 다가와요. 그 마음을 이해받지 못하면 "내가 이상한 걸까?" 하며 스스로를 의심하게 돼요. 예민한 게 아니라, 그만큼 세상을 따뜻하게 느끼는 능력을 가진 거예요.',
+ heal:['혼자 공상하기','감성 영화·책','일기 쓰기']},
+INTP:{e:'🐧',n:'탐구하는 펭귄',tag:'궁금한 건 끝까지 파고드는 호기심 박사',kw:['호기심','분석','독창성','편견 없음'],
+ d:'궁금한 게 생기면 새벽 3시까지 검색하며 파고드는 호기심 박사예요. 남들이 당연하게 여기는 것에도 "근데 왜?"라는 질문을 던져요. 대화할 때는 조용하다가도, 관심 있는 주제가 나오면 갑자기 눈이 반짝이며 말이 많아져요. 감정 표현은 서툴러서 차가워 보일 때가 있지만, 사실 편견 없이 누구든 있는 그대로 받아들이는 사람이에요. 머릿속에서는 이미 완벽한 계획이 끝났는데, 실행은 조금 미뤄지는 일이 자주 있어요. 혼자만의 시간과 생각할 여유가 있을 때 가장 기발한 아이디어가 나와요.',
+ self:'엉뚱한 주제로 밤새 이야기할 수 있는 친구예요. "외계인이 진짜 있으면 어떨까?" 같은 질문에도 진지하게 30분 동안 토론해줘요. 친구가 어떤 사람이든 판단하지 않고 있는 그대로 받아들여요. 연락이 끊겼다가도 몇 달 만에 만나면 어제 본 것처럼 편한 사이예요. 감정적인 위로는 서툴러도, 친구의 문제를 분석해서 새로운 관점을 선물해줘요.',
+ love:'표현은 서툴지만, 좋아하는 사람에게는 무한한 호기심을 보이는 연인이에요. 연인의 취미와 관심사를 공부해서 대화에 깊이를 더해줘요. 기념일은 깜빡할 수 있어도, 연인이 지나가며 말한 흥미로운 이야기는 몇 달 뒤에도 기억해요. 감정적인 다툼에서는 무슨 말을 해야 할지 몰라 멈춰버리기도 해요. 서로의 혼자 시간을 존중해주고, 지적인 대화가 통하는 사랑을 원해요.',
+ marry:'집에서도 나만의 연구실이 필요한 배우자예요. 새로운 가전이 생기면 설명서를 정독하고 숨은 기능까지 다 찾아내요. 집안일은 효율적인 방법을 고민하다가 정작 시작이 늦어질 때가 있어요. 배우자가 감정을 이야기할 때는 해결책보다 공감이 먼저라는 걸 의식적으로 기억하면 좋아요. 서로의 독립성을 존중하면, 누구보다 편안하고 재미있는 평생 파트너가 돼요.',
+ stW:['매일 똑같은 반복 업무만 계속해야 할 때','생각할 틈도 없이 "지금 당장 대답해"라고 다그칠 때','논리 없이 감정적으로 비난받을 때'],
+ stD:'나는 머릿속에서 생각을 충분히 굴려야 답이 나오는 사람이라, 다그침을 받으면 머리가 하얘져요. 반복적이고 의미 없는 일은 뇌가 꺼지는 느낌이라 금방 지쳐요. 대답이 늦는 건 무관심이 아니라, 정확한 답을 주고 싶어서예요.',
+ heal:['새로운 것 배우기','게임','혼자 생각 정리']},
+ESTP:{e:'🐯',n:'모험가 호랑이',tag:'일단 해보고 생각하는 에너지 폭발 행동파',kw:['행동력','순발력','도전','유쾌함'],
+ d:'"일단 해보자!"가 인생 모토인 행동파예요. 남들이 고민하는 동안 이미 한 발 먼저 움직이고 있어서, 주변에서 "추진력 미쳤다"는 말을 들어요. 위기 상황에서 오히려 머리가 빠르게 돌아가고, 순발력으로 문제를 뚝딱 해결해요. 이론보다 직접 부딪혀보는 걸 좋아해서, 해본 사람만 아는 노하우가 많아요. 지루한 건 정말 못 참아서, 같은 일상이 반복되면 새로운 자극을 찾아 나서요. 쿨하고 솔직해서 뒤끝이 없고, 어디서든 금방 분위기를 장악해요.',
+ self:'같이 있으면 심심할 틈이 없는 친구예요. 즉흥 여행, 새로 생긴 액티비티, 핫한 맛집은 늘 내가 먼저 제안해요. 친구가 곤란한 상황에 처하면 바로 현장으로 달려가 해결해주는 해결사예요. 고민 상담에서 길게 공감하기보다는 "그냥 이렇게 해!"라고 시원하게 말해줘요. 뒤끝이 없어서 싸워도 다음 날이면 아무렇지 않게 "밥 먹자"고 연락해요.',
+ love:'설렘과 재미가 넘치는 연애를 하는 연인이에요. 매번 새로운 데이트 코스, 즉흥 여행으로 연인을 깜짝 놀라게 해요. 감정을 길게 이야기하기보다는 함께 신나는 경험을 하는 게 내 사랑 표현이에요. 연애가 너무 반복적이거나 구속이 심해지면 답답함을 느껴요. 함께 모험을 즐기고 쿨하게 서로를 믿어주는 연인과 최고의 케미를 보여줘요.',
+ marry:'캠핑, 가족 여행, 주말 나들이로 활기찬 추억을 만드는 배우자예요. 집에 문제가 생기면 고민할 틈도 없이 바로 해결해버려요. 장기 계획이나 가계부 관리는 조금 귀찮게 느껴질 수 있어요. 배우자가 차분히 미래를 이야기하자고 하면 집중해서 들어주는 노력이 필요해요. 함께하면 매일이 재미있는, 에너지 넘치는 가족을 만드는 사람이에요.',
+ stW:['하루 종일 같은 자리에 앉아 반복 업무만 할 때','하나하나 허락받고 보고해야 하는 꽉 막힌 분위기일 때','이미 지난 일을 계속 꺼내서 길게 따질 때'],
+ stD:'나는 움직이고 부딪히면서 살아있음을 느끼는 사람이라, 갇힌 느낌이 들면 에너지가 확 꺼져요. 지난 일을 오래 붙잡는 것보다 "그래서 이제 어떻게 할까?"가 더 중요해요. 가만히 못 있는 건 산만해서가 아니라, 그만큼 삶을 생생하게 살고 싶기 때문이에요.',
+ heal:['운동','액티비티','친구들과 신나게 놀기']},
+ESFP:{e:'🐬',n:'신나는 돌고래',tag:'어디서든 분위기를 밝히는 파티 요정',kw:['밝음','사교성','표현력','즐거움'],
+ d:'내가 있는 곳이 곧 파티장이 되는 분위기 메이커예요. 사람들의 웃음소리를 들을 때 가장 행복하고, 처음 만난 사람과도 5분이면 친구가 돼요. 지금 이 순간을 즐길 줄 알아서, 맛있는 음식 하나에도 세상을 다 가진 듯 기뻐해요. 감정 표현이 솔직하고 풍부해서, 기쁠 때도 슬플 때도 얼굴에 다 드러나요. 미래 계획보다는 오늘의 행복이 중요해서, 가끔 충동적인 소비에 후회하기도 해요. 밝아 보이지만 사실 마음이 여려서, 누군가 나를 싫어하는 것 같으면 오래 신경 쓰여요.',
+ self:'모임의 분위기를 살리는 비타민 같은 친구예요. 친구의 기쁜 일에는 내 일보다 더 크게 소리 지르며 축하해줘요. 친구가 우울해 보이면 "나와! 맛있는 거 먹으러 가자!"로 기분을 바꿔줘요. 사진 찍는 걸 좋아해서 친구들 인생샷은 다 내 폰에 있어요. 다만 무겁고 진지한 대화가 길어지면 어떻게 해야 할지 몰라 슬쩍 분위기를 바꾸려 해요.',
+ love:'애정 표현이 넘쳐흐르는 다정한 연인이에요. 하루에도 몇 번씩 "보고 싶어"를 말하고, 연인과의 사진으로 갤러리를 가득 채워요. 기념일에는 깜짝 이벤트로 연인을 감동시키는 걸 좋아해요. 연인의 반응이 미지근하면 "내가 뭘 잘못했나?" 하고 금방 시무룩해져요. 함께 웃고 즐기는 순간을 소중히 여기는 연인과 가장 행복한 연애를 해요.',
+ marry:'집안을 늘 웃음소리로 채우는 배우자예요. 평범한 주말도 "오늘 뭐 맛있는 거 해 먹을까?"로 작은 축제로 만들어요. 기념일, 생일 이벤트는 언제나 내 담당이에요. 다만 가계부와 장기 계획은 배우자와 함께 정리하는 게 좋아요. 함께 사는 하루하루를 즐거운 추억으로 만들어주는 사람이에요.',
+ stW:['혼자 고립된 채 아무와도 이야기하지 못할 때','즐거운 분위기가 나 때문에 가라앉은 것 같을 때','사람들 앞에서 나를 비판하거나 무시할 때'],
+ stD:'나는 사람들과 감정을 나누며 에너지를 얻는 사람이라, 혼자 남겨지면 배터리가 빠르게 닳아요. 밝아 보여도 마음은 누구보다 여려서, 차가운 반응 하나에 하루 기분이 좌우되기도 해요. 늘 웃는 건 걱정이 없어서가 아니라, 주변을 행복하게 만들고 싶기 때문이에요.',
+ heal:['맛있는 음식','쇼핑','사람들과 수다']},
+ENFP:{e:'🐶',n:'해맑은 강아지',tag:'세상 모든 게 궁금한 열정 가득 낙천가',kw:['열정','긍정','아이디어','친화력'],
+ d:'세상의 모든 게 궁금하고 신기한 열정 부자예요. 새로운 아이디어가 떠오르면 심장이 두근거려서 바로 누군가에게 이야기해야 해요. 처음 보는 사람과도 금방 친해지고, 사람들의 장점을 귀신같이 찾아내요. 시작은 누구보다 화려한데, 흥미가 떨어지면 마무리가 어려운 게 고민이에요. 밝고 에너지 넘쳐 보이지만, 혼자 있을 때는 생각이 많아져서 밤에 이불 속에서 고민하기도 해요. 매일이 같은 건 못 참아서, 늘 새로운 재미와 의미를 찾아다녀요.',
+ self:'친구의 장점을 누구보다 잘 찾아서 칭찬해주는 응원단장이에요. "너 이거 진짜 잘한다! 이걸로 뭐 해보자!" 하며 친구의 꿈에 불을 붙여줘요. 단톡방에서 가장 말이 많고, 이모티콘과 느낌표가 넘쳐요. 갑자기 "우리 내일 바다 갈래?" 같은 즉흥 제안으로 친구들을 끌고 다녀요. 연락이 많다가 갑자기 뜸해질 때가 있는데, 그건 마음이 식은 게 아니라 다른 데 정신이 팔린 거예요.',
+ love:'표현도 만점, 설렘도 만점인 연인이에요. 연인과 함께할 미래를 상상하며 "우리 나중에 이거 하자!" 리스트가 끝도 없이 늘어나요. 깜짝 선물과 편지로 연인을 감동시키는 걸 좋아해요. 연애가 익숙해져서 설렘이 줄어들면 괜히 불안해지기도 해요. 내 엉뚱함까지 귀여워해주는 연인 앞에서 가장 사랑스러운 사람이 돼요.',
+ marry:'평범한 일상에도 새로운 재미를 불어넣는 배우자예요. 갑자기 가구 배치를 바꾸거나 새로운 요리에 도전하며 집안에 활력을 줘요. 배우자의 꿈을 진심으로 응원하고 "당신은 할 수 있어!"라고 말해줘요. 반복되는 집안일과 정리 정돈은 조금 버거울 수 있어서 역할 분담이 중요해요. 함께 웃고 꿈꾸는 가정을 만드는 사람이에요.',
+ stW:['매일 똑같은 일상이 끝없이 반복될 때','신나서 꺼낸 아이디어에 "그게 되겠어?"라는 말이 돌아올 때','가까운 사람과의 갈등이 풀리지 않고 길어질 때'],
+ stD:'나는 설렘과 가능성에서 에너지를 얻는 사람이라, 새로움이 사라지면 마음의 불빛이 흐려져요. 밝아 보이지만 관계에 진심이라서, 소중한 사람과 어긋나면 밤새 머릿속이 시끄러워요. 기분이 오락가락하는 게 아니라, 그만큼 모든 걸 온 마음으로 느끼는 거예요.',
+ heal:['새로운 장소 탐방','친구와 수다','즉흥 계획']},
+ENTP:{e:'🦜',n:'수다쟁이 앵무새',tag:'기발한 아이디어로 세상을 뒤집는 토론왕',kw:['재치','창의력','도전','말솜씨'],
+ d:'머릿속에서 아이디어가 팝콘처럼 터지는 사람이에요. 남들이 당연하게 받아들이는 것에도 "근데 반대로 생각해보면?" 하고 질문을 던져요. 말싸움에서 지는 일이 거의 없어서, 친구들이 "너랑은 토론 안 해"라고 말해요. 새로운 일을 시작할 때 가장 신나지만, 반복적인 마무리 작업은 솔직히 지루해요. 재치 있는 농담으로 분위기를 띄우는 데 재능이 있어요. 규칙이 왜 있는지 납득이 안 되면 따르기 어려워서, 가끔 "반항아"라는 소리를 들어요.',
+ self:'대화가 끊기지 않는 재미있는 친구예요. 친구가 고민을 말하면 아무도 생각 못 한 기발한 해결책을 내놓아요. 장난과 드립이 많아서 친구들을 놀리지만, 친구가 진짜 힘들 땐 진지하게 편이 돼줘요. "우리 이거 같이 해볼래?" 하며 친구들을 새로운 일에 끌어들이는 기획자예요. 가끔 논쟁에서 이기려다 친구를 서운하게 할 수 있으니, 이길 때와 들어줄 때를 구분하면 최고의 친구예요.',
+ love:'티키타카가 잘 되는 연애를 좋아하는 연인이에요. 연인과 밤새 토론하고 서로 놀리는 게 최고의 데이트예요. 지루함을 못 참아서 늘 새로운 데이트를 기획해 연인을 즐겁게 해줘요. 다툼이 생기면 논리로 이기려 하다 연인의 감정을 놓칠 수 있어요. 나와 대등하게 대화할 수 있는, 똑똑하고 유머러스한 연인에게 깊이 빠져요.',
+ marry:'늘 새로운 도전과 변화를 제안하는 배우자예요. 이사, 창업, 새로운 취미까지 함께라면 인생이 모험이 돼요. 집안의 문제를 창의적인 방법으로 해결하는 데 재능이 있어요. 다만 반복적인 집안일이나 꼼꼼한 관리는 배우자와 역할을 나누는 게 좋아요. 함께 있으면 대화가 끊이지 않는, 평생 친구 같은 배우자예요.',
+ stW:['"원래 그렇게 하는 거야"라는 말만 반복될 때','내 아이디어가 제대로 들어보지도 않고 묵살될 때','매일 똑같은 루틴 속에서 할 일만 기계적으로 할 때'],
+ stD:'나는 생각을 굴리고 새로운 걸 시도하면서 에너지를 얻는 사람이라, 틀에 갇히면 머리가 멈추는 느낌이 들어요. 질문을 많이 하는 건 반항이 아니라, 진짜 더 나은 방법을 찾고 싶기 때문이에요. 지루함은 나에게 단순한 심심함이 아니라, 꽤 큰 스트레스예요.',
+ heal:['새 프로젝트','신나는 토론','즉흥 외출']},
+ESTJ:{e:'🦁',n:'든든한 사자',tag:'모두를 이끄는 현실적인 리더',kw:['추진력','체계','리더십','생활력'],
+ d:'어디서든 자연스럽게 "정리 담당"이 되는 현실적인 리더예요. 일이 어수선하게 흘러가면 참지 못하고 "자, 이렇게 하자!"라며 교통정리를 해요. 해야 할 일 목록을 하나씩 지워갈 때 가장 큰 쾌감을 느껴요. 원칙과 약속을 중요하게 여겨서, 대충 하는 사람을 보면 속이 답답해져요. 직설적인 말투 때문에 오해를 받기도 하지만, 사실 모두가 잘되길 바라는 마음에서 나온 말이에요. 책임감이 강해서 맡은 일은 무슨 일이 있어도 끝까지 해내요.',
+ self:'모임 총무, 여행 계획, 정산은 늘 내 몫인 친구예요. 친구들이 "어디 갈까?" 고민할 때 이미 예약까지 끝내놓는 추진력이 있어요. 친구가 고민을 말하면 현실적인 해결책을 단계별로 정리해줘요. 약속에 늦거나 계획을 갑자기 바꾸는 친구에게는 솔직하게 불편함을 말하는 편이에요. 한 번 내 사람이다 싶으면 의리 있게 끝까지 챙기는 든든한 친구예요.',
+ love:'책임감 있게 관계를 이끌어가는 연인이에요. 데이트 계획, 기념일 준비까지 완벽하게 챙겨서 연인이 신경 쓸 게 없게 만들어요. 약속과 신뢰를 무엇보다 중요하게 여겨서, 거짓말이나 약속 파기에는 단호해요. 감정 표현보다 행동으로 사랑을 보여줘서, 가끔 "나 사랑하긴 해?"라는 질문을 들을 수 있어요. 함께 미래를 현실적으로 설계할 수 있는 연인과 가장 안정적인 사랑을 해요.',
+ marry:'가정의 큰 결정을 똑 부러지게 정리하는 생활력 만렙 배우자예요. 대출, 보험, 이사 같은 복잡한 일도 척척 처리해서 가족이 안심하게 해줘요. 집안의 규칙과 질서가 잘 지켜질 때 마음이 편안해요. 다만 내 방식만 고집하면 배우자가 숨 막혀할 수 있으니, 가끔은 "당신 생각은 어때?"를 먼저 물어봐 주세요. 가족을 위해서라면 누구보다 열심히 뛰는 든든한 기둥이에요.',
+ stW:['누군가 맡은 일을 대충 하고 책임을 피할 때','정해진 것 없이 우왕좌왕하며 시간만 흘러갈 때','열심히 한 내 노력이 "너무 깐깐하다"는 말로 돌아올 때'],
+ stD:'나는 일이 제대로 굴러갈 때 마음이 놓이는 사람이라, 혼란스러운 상황을 보면 내가 나서서라도 정리해야 마음이 편해요. 그런데 그 노력이 잔소리로만 받아들여지면 허탈하고 서운해요. 깐깐한 게 아니라, 모두가 고생하지 않게 하고 싶은 거예요.',
+ heal:['할 일 목록 클리어','운동','성취감 느끼기']},
+ESFJ:{e:'🐻',n:'포근한 곰',tag:'모두가 편안하도록 챙기는 다정한 분위기 메이커',kw:['다정함','챙김','조화','사교성'],
+ d:'모두가 편안한지 늘 살피는 다정한 분위기 메이커예요. 모임에서 혼자 있는 사람을 발견하면 먼저 다가가 말을 걸어줘요. 다른 사람의 생일, 좋아하는 음식, 최근 고민까지 다 기억하고 챙겨요. 사람들 사이가 화목할 때 가장 행복하고, 분위기가 싸해지면 내가 먼저 나서서 풀려고 해요. 누군가 "고마워"라고 말해주면 그날 하루의 피로가 다 녹아요. 다만 남을 챙기느라 정작 내 마음은 뒷전이 될 때가 많아요.',
+ self:'단톡방의 따뜻한 엄마 같은 친구예요. 친구 생일에는 케이크와 롤링페이퍼를 기획하고, 아프다는 친구에게는 죽을 배달해줘요. 모임을 주최하고 모두가 즐거운지 계속 체크해요. 친구들 사이에 갈등이 생기면 중재하느라 누구보다 바빠요. 내가 챙긴 만큼 돌아오지 않으면 서운하지만, 그래도 또 챙기게 되는 정 많은 친구예요.',
+ love:'애정 표현과 챙김이 넘치는 연인이에요. 연인의 컨디션, 일정, 기분까지 세심하게 챙겨요. 연인의 가족과 친구들에게도 다정하게 대해서 "너 같은 사람 만나서 다행이다"라는 말을 들어요. 연인의 반응이 무심하거나 고마움을 표현하지 않으면 마음이 쉽게 상해요. 사랑을 말과 행동으로 확인해주는 연인과 가장 따뜻한 연애를 해요.',
+ marry:'가족 행사와 관계를 따뜻하게 이끄는 배우자예요. 양가 가족 모임, 명절, 생일을 꼼꼼히 챙겨 집안 분위기를 화목하게 만들어요. 집이 늘 손님을 맞이할 준비가 되어 있고, 사람 냄새가 나요. 다만 모두를 챙기느라 지치지 않도록, 배우자가 "당신도 좀 쉬어"라고 말해주는 게 큰 힘이 돼요. 가족 모두가 사랑받는다고 느끼게 해주는 사람이에요.',
+ stW:['가까운 사람들 사이에 냉랭한 분위기가 흐를 때','열심히 챙겼는데 고맙다는 말 한마디 없을 때','누군가 나를 싫어하는 것 같다는 느낌이 들 때'],
+ stD:'나는 관계 속에서 행복을 느끼는 사람이라, 주변이 불편하면 내 마음도 함께 흔들려요. 챙기는 걸 좋아하지만, 그 마음이 당연하게 여겨지면 "나만 노력하나?" 하는 서운함이 밀려와요. 바라는 건 큰 보답이 아니라 "네가 있어서 좋아"라는 따뜻한 확인이에요.',
+ heal:['좋아하는 사람들과 밥','고맙다는 말 듣기','수다']},
+ENFJ:{e:'🐳',n:'마음 넓은 고래',tag:'사람들의 가능성을 믿어주는 따뜻한 리더',kw:['공감','리더십','응원','따뜻함'],
+ d:'사람들의 가능성을 누구보다 먼저 믿어주는 따뜻한 리더예요. 누군가 힘들어하면 그냥 지나치지 못하고, 어떻게든 도와줄 방법을 찾아요. 말에 힘이 있어서, 내가 진심으로 응원하면 상대가 정말로 힘을 얻어요. 모임에서 자연스럽게 중심이 되어 사람들을 하나로 모아요. 다른 사람의 감정을 너무 잘 느껴서, 남의 문제를 내 문제처럼 떠안고 지칠 때가 있어요. 모두를 챙기지만, 정작 나는 "괜찮아?"라는 말을 듣고 싶을 때가 많아요.',
+ self:'친구의 꿈을 진심으로 응원하고 이끌어주는 멘토 같은 친구예요. 친구가 자신감을 잃었을 때 "넌 충분히 할 수 있어"라며 진심 어린 말로 힘을 줘요. 친구들 사이를 이어주고, 모임을 만들어 모두를 하나로 묶어요. 친구의 고민을 듣다가 내가 더 마음 아파하기도 해요. 늘 들어주는 쪽이지만, 나도 가끔은 기대고 싶다는 걸 친구들이 알아주면 좋겠어요.',
+ love:'연인을 위해 아낌없이 마음을 쏟는 헌신적인 연인이에요. 연인의 꿈과 고민을 내 일처럼 함께 고민하고 응원해요. 기념일, 서프라이즈, 다정한 말까지 사랑을 표현하는 데 망설임이 없어요. 하지만 주기만 하다 지칠 수 있으니, 나도 챙김받고 싶다는 걸 솔직하게 말해도 괜찮아요. 서로를 성장시키는 깊은 사랑을 원해요.',
+ marry:'가족 모두가 함께 성장하도록 이끄는 배우자예요. 저녁 식탁에서 서로의 하루를 묻고, 대화가 끊이지 않는 집을 만들어요. 가족의 꿈과 행복을 위해서라면 기꺼이 앞장서요. 다만 가족의 모든 감정을 혼자 떠안으려 하다 지칠 수 있어요. 배우자가 "오늘은 내가 챙길게"라고 말해줄 때 가장 큰 사랑을 느껴요.',
+ stW:['아끼는 사람들끼리 다투고, 나는 그 사이에 끼어 있을 때','진심으로 한 조언이 "오지랖"이라는 말로 돌아올 때','모두를 챙기느라 정작 나를 돌볼 시간이 하나도 없을 때'],
+ stD:'나는 사람들의 감정을 내 것처럼 느끼는 사람이라, 주변이 아프면 나도 함께 아파요. 그래서 모두를 행복하게 만들려고 애쓰다가, 정작 내 마음의 배터리가 바닥난 걸 늦게 알아차려요. 지친 건 약해서가 아니라, 그만큼 많은 사랑을 나눠줬기 때문이에요.',
+ heal:['깊은 대화','누군가를 돕는 일','혼자만의 회복 시간']},
+ENTJ:{e:'🦅',n:'리더 독수리',tag:'목표를 향해 거침없이 나아가는 대담한 지휘관',kw:['결단력','비전','추진력','자신감'],
+ d:'목표가 생기면 거침없이 길을 만들어 나가는 타고난 지휘관이에요. 큰 그림을 그리고 사람들에게 역할을 나눠서 결과를 만들어내는 데 재능이 있어요. 우유부단한 상황을 못 참아서 "그래서 결론이 뭐야?"가 자주 나와요. 자신감 넘치고 직설적이라 차가워 보일 수 있지만, 사실 내 사람들은 끝까지 책임지는 의리파예요. 실패를 두려워하기보다 다음 전략을 세우는 데 집중해요. 쉴 때조차 "이 시간을 어떻게 더 알차게 쓸까"를 고민하는 사람이에요.',
+ self:'친구의 목표를 현실로 만들어주는 추진력 있는 친구예요. 친구가 "나 이거 해보고 싶어" 하면 "그럼 이렇게 시작해!"라며 로드맵을 그려줘요. 모임에서는 자연스럽게 리더가 되어 의사결정을 빠르게 정리해요. 위로보다 해결책을 먼저 말해서 가끔 차갑다는 오해를 받지만, 결국 친구를 가장 확실하게 도와주는 사람이에요. 친구의 성공을 자기 일처럼 기뻐하고 여기저기 자랑해줘요.',
+ love:'함께 성장하는 파워 커플을 꿈꾸는 연인이에요. 연인의 꿈과 커리어를 진지하게 응원하고, 필요한 걸 적극적으로 도와줘요. 데이트도 효율적으로 계획해서 짧은 시간에도 알찬 추억을 만들어요. 감정적인 문제를 논리로 해결하려다 연인을 서운하게 할 수 있으니, 가끔은 그냥 들어주는 연습이 필요해요. 서로를 존중하고 함께 큰 꿈을 꾸는 연인 앞에서 가장 다정해져요.',
+ marry:'가족의 미래를 확실하게 설계하고 실행하는 배우자예요. 내 집 마련, 자산 관리, 아이 교육 계획까지 장기 로드맵이 머릿속에 있어요. 집안의 중요한 결정을 빠르고 명확하게 내려 가족을 이끌어요. 다만 모든 걸 주도하다 보면 배우자가 소외감을 느낄 수 있으니, 함께 결정하는 시간을 꼭 가져주세요. 가족을 위해서라면 어떤 문제든 해결해내는 든든한 리더예요.',
+ stW:['결정은 안 하고 같은 이야기만 반복될 때','노력 없이 불평만 하는 사람과 함께 일해야 할 때','내가 통제할 수 없는 변수 때문에 계획이 무너질 때'],
+ stD:'나는 목표를 향해 나아갈 때 살아있음을 느끼는 사람이라, 제자리걸음은 나에게 가장 큰 스트레스예요. 답답함이 쌓이면 말투가 날카로워지기도 하지만, 사실 그건 빨리 상황을 좋게 만들고 싶은 조급함이에요. 강해 보여도, 나도 가끔은 누군가 "수고했어"라고 말해주길 바라요.',
+ heal:['목표 달성','계획 세우기','운동']}
+};
+
+/* 비교 문구: 축별 (같을 때 / 다를 때) × 모드 */
+const CMP = {
+  0:{same:'에너지를 채우는 방식이 비슷해서 함께 있는 시간이 자연스럽고 편안해요.',
+     diff:{self:'한 명은 사람들 속에서, 한 명은 혼자서 충전해요. 만나는 횟수보다 "충전 방식"을 존중해주면 훨씬 편해져요.',
+           love:'데이트 에너지가 달라요. 활기찬 데이트와 집 데이트를 번갈아 하면 둘 다 행복해요.',
+           marry:'퇴근 후 대화 시간과 혼자 쉬는 시간을 미리 정해두면 서운함이 확 줄어요.'}},
+  1:{same:'세상을 보는 눈이 비슷해서 대화가 잘 통하고, 말하지 않아도 알아듣는 순간이 많아요.',
+     diff:{self:'한 명은 현실 이야기, 한 명은 상상 이야기를 좋아해요. 서로의 세계를 구경하는 재미가 있어요!',
+           love:'선물과 기념일에서 차이가 나요. 실용 + 의미, 둘 다 챙기면 최고의 커플이에요.',
+           marry:'한 명은 디테일, 한 명은 큰 그림 담당! 역할을 나누면 찰떡 팀이 돼요.'}},
+  2:{same:'결정하고 표현하는 방식이 비슷해서, 서로의 반응이 예상 가능하고 오해가 적어요.',
+     diff:{self:'고민 상담 때 "해결책 vs 공감"으로 엇갈릴 수 있어요. "지금 조언이 필요해, 위로가 필요해?" 먼저 물어봐 주세요.',
+           love:'다툴 때 논리와 감정이 엇갈리기 쉬워요. 감정을 먼저 인정하고 → 그다음에 해결하는 순서로!',
+           marry:'큰 결정에서 숫자와 마음이 부딪힐 수 있어요. 서로가 놓치는 쪽을 채워주는 든든한 사이예요.'}},
+  3:{same:'생활 리듬이 비슷해서 약속, 일정, 청소 습관까지 자연스럽게 맞아요.',
+     diff:{self:'약속 잡는 스타일이 달라요. 큰 틀만 정하고 세부 일정은 자유롭게 두면 편해요.',
+           love:'계획 담당과 즉흥 이벤트 담당! 서로의 방식으로 데이트를 번갈아 준비해보세요.',
+           marry:'집안일과 정리 방식이 달라요. 꼭 지킬 규칙 몇 개만 정하고 나머지는 유연하게!'}}
+};
+
+const CHEM = [
+  {t:'정반대의 매력',d:'서로 완전히 다른 세계! 처음엔 낯설지만, 서로가 가장 많은 걸 배울 수 있는 사이예요.'},
+  {t:'서로를 채워주는 사이',d:'다른 점이 더 많아서, 내가 못 하는 걸 상대가 해줘요. 대화가 곧 케미의 비결!'},
+  {t:'서로 배우는 사이',d:'닮은 점 반, 다른 점 반. 편안함과 새로움을 함께 느낄 수 있는 균형 잡힌 관계예요.'},
+  {t:'편안한 단짝',d:'대부분 잘 맞아서 함께 있으면 편안해요. 다른 한 가지가 관계에 재미를 더해줘요.'},
+  {t:'거울 같은 사이',d:'생각도 리듬도 똑 닮았어요! 말하지 않아도 통하는 사이. 가끔은 서로에게 새로운 자극도 주세요.'}
+];
+
+/* ===================== 상태 ===================== */
+let mode = null, nick = '', answers = [], qi = 0, invite = null;
+
+const $ = id => document.getElementById(id);
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2000)}
+function setMode(m){mode=m;document.body.className='m-'+m}
+
+function goHome(){
+  invite=null;history.replaceState(null,'',location.pathname);
+  document.body.className='';show('home');
+}
+
+function pickMode(m){
+  setMode(m);
+  const M=MODES[m];
+  $('introIc').textContent=M.ic;$('introTitle').textContent=M.title;$('introDesc').innerHTML=M.desc;
+  $('inviteBox').innerHTML = invite ? `<div class="invite">💌 <b>${esc(invite.name)}</b>님이 ‘${M.title}’ 결과를 보냈어요!<br>나도 테스트하면 <b>서로의 결과를 비교</b>해볼 수 있어요.</div>` : '';
+  show('intro');setTimeout(()=>$('nick').focus(),300);
+}
+
+function startQuiz(){
+  nick=$('nick').value.trim()||'나';
+  answers=[];qi=0;renderQ();show('quiz');
+}
+
+/* 문항마다 고정된 순서로 선택지를 섞기 (이전으로 돌아가도 같은 순서) */
+function order(i){
+  const seeds=[[0,1,2,3],[2,0,3,1],[1,3,0,2],[3,2,1,0],[0,2,1,3],[2,3,0,1],[1,0,3,2],[3,1,2,0]];
+  return seeds[(i*5+3)%seeds.length];
+}
+
+function renderQ(){
+  const list=Q[mode],q=list[qi];
+  $('qnum').textContent=`${qi+1} / ${list.length}`;
+  $('progBar').style.width=(qi/list.length*100)+'%';
+  const c=$('cheer');c.textContent=CHEER[qi]||'';c.classList.remove('pop');if(CHEER[qi]){void c.offsetWidth;c.classList.add('pop')}
+  $('qEmoji').textContent=q.e;$('qText').textContent=q.q;
+  const keys=['A','B','C','D'];
+  $('answers').innerHTML=order(qi).map((oi,n)=>{
+    const [t,w]=q.o[oi];const picked=answers[qi]===w?' pick':'';
+    return `<button class="ans${picked}" onclick="answer(${w},this)"><span class="k">${keys[n]}</span><span>${esc(t)}</span></button>`;
+  }).join('');
+}
+
+function answer(w,el){
+  document.querySelectorAll('.ans').forEach(b=>b.classList.remove('pick'));
+  el.classList.add('pick');
+  answers[qi]=w;
+  setTimeout(()=>{
+    qi++;
+    if(qi<Q[mode].length){renderQ();}
+    else{$('progBar').style.width='100%';show('loading');setTimeout(showResult,1500);}
+  },230);
+}
+function prevQ(){if(qi===0){show('intro');return}qi--;renderQ()}
+
+/* 각 축 앞 글자(E,S,T,J) 비율: 5~95% */
+function calc(){
+  const sum=[0,0,0,0],n=[0,0,0,0],last=[0,0,0,0];
+  Q[mode].forEach((q,i)=>{sum[q.ax]+=answers[i];n[q.ax]++;last[q.ax]=answers[i]});
+  const pct=sum.map((s,i)=>{
+    let p=Math.round(50+s/(2*n[i])*45);
+    if(p===50)p=last[i]>0?52:48; // 동점이면 그 축의 마지막 답으로 결정
+    return p;
+  });
+  const type=pct.map((p,i)=>p>50?AX[i].a:AX[i].b).join('');
+  return {type,pct};
+}
+
+/* 편한 사람: 생각 방식(S/N)·생활 리듬(J/P)이 같고 에너지(E/I)는 반대
+   맞춰가야 하는 사람: 생각 방식·생활 리듬이 반대이고 에너지는 같음 */
+function flip(ch){return {E:'I',I:'E',S:'N',N:'S',T:'F',F:'T',J:'P',P:'J'}[ch]}
+function partners(type){
+  const easy=[],adj=[];
+  ['T','F'].forEach(tf=>{
+    easy.push(flip(type[0])+type[1]+tf+type[3]);
+    adj.push(type[0]+flip(type[1])+tf+flip(type[3]));
+  });
+  return {easy,adj};
+}
+
+function axisBars(pct){
+  return AX.map((a,i)=>`<div class="axis"><div class="lbl"><span><b>${a.a}</b> ${a.an} ${pct[i]}%</span><span>${100-pct[i]}% ${a.bn} <b>${a.b}</b></span></div><div class="bar"><div class="l" style="width:${pct[i]}%"></div><div class="r" style="width:${100-pct[i]}%"></div></div></div>`).join('');
+}
+
+function palCard(cls,label,types,desc){
+  return `<div class="pal ${cls}"><div class="em">${types.map(t=>T[t].e).join('')}</div><div><span class="pill">${label}</span><br><b>${types.map(t=>`${t} ${T[t].n}`).join(' · ')}</b><small>${desc}</small></div></div>`;
+}
+
+function compareHTML(me,them){
+  const who=MODES[mode].who;
+  let same=0;
+  const rows=AX.map((a,i)=>{
+    const s=me.type[i]===them.type[i]; if(s)same++;
+    const txt=s?CMP[i].same:CMP[i].diff[mode];
+    return `<div class="cmp"><div class="h"><span>${a.topic} (${a.a}/${a.b})</span><span class="${s?'same':'diff'}">${s?'닮았어요':'달라요'}</span></div>
+      <div class="row"><span class="who">${esc(nick)}</span><div class="bar"><div class="l" style="width:${me.pct[i]}%"></div><div class="r" style="width:${100-me.pct[i]}%"></div></div><span class="v">${me.type[i]}</span></div>
+      <div class="row"><span class="who">${esc(them.name)}</span><div class="bar them"><div class="l" style="width:${them.pct[i]}%"></div><div class="r" style="width:${100-them.pct[i]}%"></div></div><span class="v">${them.type[i]}</span></div>
+      <p>${txt}</p></div>`;
+  }).join('');
+  const diffSum=me.pct.reduce((s,p,i)=>s+Math.abs(p-them.pct[i]),0);
+  const score=Math.max(40,Math.round(100-diffSum/360*60));
+  const c=CHEM[same];
+  return `<div class="card sec"><h3>💞 ${who}와 나, 함께 보기</h3>
+    <div class="vs"><div class="p"><div class="e">${T[me.type].e}</div><div class="t">${me.type}</div><div class="n">${esc(nick)}</div></div>
+    <div class="heart">${mode==='self'?'🤝':mode==='love'?'💗':'💍'}</div>
+    <div class="p"><div class="e">${T[them.type].e}</div><div class="t">${them.type}</div><div class="n">${esc(them.name)}</div></div></div>
+    <div class="chem"><div class="s">${score}%</div><div class="ttl">${c.t}</div><p class="muted" style="margin-top:4px">${c.d}</p></div>
+    ${rows}</div>`;
+}
+
+function showResult(){
+  const r=calc(),t=T[r.type],M=MODES[mode],p=partners(r.type);
+  const who=M.who;
+  const html=`
+    ${invite?compareHTML(r,invite):''}
+    <div class="card rhead">
+      <span class="tag">${M.ic} ${M.title} · ${esc(nick)}님의 결과</span>
+      <div class="char">${t.e}</div>
+      <div class="type">${r.type}</div>
+      <h2>${t.n}</h2>
+      <p>${t.tag}</p>
+    </div>
+    <div class="card sec"><h3>📊 나의 성향 그래프</h3>${axisBars(r.pct)}</div>
+    <div class="card sec"><h3>🌼 나는 이런 사람</h3><p>${t.d}</p><div class="chips">${t.kw.map(k=>`<span class="chip">#${k}</span>`).join('')}</div></div>
+    <div class="card sec"><h3>${M.secIc} ${M.sec}</h3><p>${t[mode]}</p></div>
+    <div class="card sec"><h3>🌧️ 스트레스 & 힐링</h3>
+      <h4 style="margin-top:0">이럴 때 제일 힘들어요</h4>
+      <ul>${t.stW.map(s=>`<li>${s}</li>`).join('')}</ul>
+      <h4>💭 사실은요</h4>
+      <div class="why"><p>${t.stD}</p></div>
+      <h4>🍀 나를 회복시키는 것</h4>
+      <div class="chips" style="margin-top:0">${t.heal.map(h=>`<span class="chip">🍀 ${h}</span>`).join('')}</div>
+    </div>
+    <div class="card sec"><h3>🫶 나와 함께하는 ${who}</h3>
+      ${palCard('easy',`내가 편한 ${who}`,p.easy,'생각하는 방식과 생활 리듬이 비슷해서 말이 잘 통하고, 에너지는 반대라 서로를 자연스럽게 채워줘요.')}
+      ${palCard('adj',`맞춰가야 하는 ${who}`,p.adj,'생각하는 방식과 생활 리듬이 달라서 처음엔 오해가 생기기 쉬워요. 하지만 맞춰갈수록 내 시야를 가장 넓혀주는 사람이에요.')}
+      <p class="muted" style="margin-top:6px">※ 맞고 안 맞고가 아니라, 처음부터 편한지 · 서로 노력이 필요한지의 차이예요.</p>
+    </div>
+    <div class="share-box">
+      <p>${invite?`나의 결과도 <b>${esc(invite.name)}</b>님에게 보내서<br>같이 비교 결과를 볼 수 있게 해주세요!`:`이 결과를 ${who}에게 보내보세요!<br>${who}가 테스트를 마치면 <b>우리 둘의 비교 결과</b>가 나와요.`}</p>
+      <button class="btn" onclick="shareLink()">💌 ${who}에게 보내기</button>
+      <div class="linkbox" id="linkbox"></div>
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn ghost" onclick="pickMode(mode)">🔁 다시 하기</button>
+      <button class="btn ghost" onclick="goHome()">🏠 다른 테스트 해보기</button>
+    </div>
+    <footer>✿ 재미로 보는 테스트예요. 사람은 하나의 유형보다 훨씬 다채로워요 ✿</footer>`;
+  window._last=r;
+  $('result').innerHTML=html;show('result');
+}
+
+function shareLink(){
+  const r=window._last;
+  const url=`${location.origin}${location.pathname}?m=${mode}&n=${encodeURIComponent(nick)}&r=${r.type}-${r.pct.join('-')}`;
+  const text=`${nick}님의 ‘${MODES[mode].title}’ 결과는 ${r.type} ${T[r.type].n}! 너도 해보고 우리 둘 비교해보자 💕`;
+  if(navigator.share){navigator.share({title:'나를 알아가는 시간',text,url}).catch(()=>{});return}
+  const done=()=>toast('링크가 복사됐어요! 붙여넣어 보내주세요');
+  if(navigator.clipboard){navigator.clipboard.writeText(text+'\n'+url).then(done,()=>showLink(url))}else showLink(url);
+}
+function showLink(url){const b=$('linkbox');b.style.display='block';b.textContent=url}
+
+/* 초대 링크로 들어온 경우 */
+(function init(){
+  const p=new URLSearchParams(location.search);
+  const m=p.get('m'),n=p.get('n'),r=p.get('r');
+  if(m&&MODES[m]&&r){
+    const parts=r.split('-');const type=parts[0];const pct=parts.slice(1).map(Number);
+    if(T[type]&&pct.length===4&&pct.every(x=>x>=0&&x<=100)){
+      invite={name:(n||'친구').slice(0,10),type,pct};
+      pickMode(m);
+    }
+  }
+})();
+</script>
+</body>
+</html>
